@@ -76,9 +76,11 @@ export const getAllPages = async () => {
     const results = await res.json();
     if (!results.length) throw new Error("No pages found");
 
-    return results.map((page: any) => ({
-        slug: page.slug,
-        title: page.title.rendered,
-    }));
+    return results
+        .filter((page: any) => page.slug !== "pagina-de-inicio") // ❌ Excluye la página "pagina-de-inicio"
+        .map((page: any) => ({
+            slug: page.slug,
+            title: page.title.rendered,
+        }));
 };
 
