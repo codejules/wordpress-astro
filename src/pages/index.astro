@@ -1,11 +1,29 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+import Layout from "../layouts/Layout.astro";
+import GameCard from "../components/GameCard.astro";
+import { getLatestPosts, getPageInfo } from "../lib/wp.ts";
+import Menu from "../components/Menu.astro";
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const { title, content } = await getPageInfo("pagina-de-inicio");
+const posts = await getLatestPosts({perPage: 3});
 ---
 
 <Layout>
-	<Welcome />
+	<Menu />
+	<div class="max-w-screen-xl mx-auto p-4 flex flex-col gap-5">
+		<section>
+			<div>
+				<h1>{title}</h1>
+				<p set:html={content} />
+			</div>
+		</section>
+	
+		<section>
+			<h2>Ultimos articulos</h2>
+			<div  class="grid grid-cols-3 gap-4" >
+				{posts.map((post: any) => <GameCard {...post} />)}
+			</div>
+		</section>
+
+	</div>
 </Layout>

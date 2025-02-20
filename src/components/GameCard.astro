@@ -1,0 +1,39 @@
+---
+interface Props {
+    title: string;
+    excerpt: string;
+    featuredImage: string;
+    date: string;
+    slug: string;
+}
+
+const { title, excerpt, featuredImage, date, slug } = Astro.props;
+---
+
+<article>
+    <div
+        class="max-w-sm bg-gray-500  rounded-lg shadow-sm "
+    >
+        <a href={`/post/${slug}`}>
+            <img
+                class="rounded-t-lg h-44 object-cover w-full"
+                src={featuredImage}
+                alt={title}
+            />
+        </a>
+        <div class="p-5">
+            <a href={`/post/${slug}`}>
+                <h5
+                    class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
+                >
+                    {title}
+                </h5>
+            </a>
+            <p class="text-xs text-white">{date}</p>
+            <p
+                class="mb-3 font-normal text-gray-700 dark:text-gray-400"
+                set:html={excerpt}
+            />
+        </div>
+    </div>
+</article>

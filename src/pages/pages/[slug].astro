@@ -1,0 +1,36 @@
+---
+import Menu from "../../components/Menu.astro";
+import Layout from "../../layouts/Layout.astro";
+import { getAllPages } from "../../lib/wp.ts";
+
+export async function getStaticPaths() {
+    const pages = await getAllPages();
+
+    // Creamos un array de rutas basadas en los slugs de cada página
+    return pages.map((page: any) => ({
+        params: { slug: page.slug },
+        props: { page }, // Pasamos los datos de la página como props
+    }));
+}
+
+// Obtenemos la página actual desde las props
+interface Page {
+    title: {
+        rendered: string;
+    };
+    content: {
+        rendered: string;
+    };
+}
+
+const { page } = Astro.props as { page: Page };
+---
+
+<Layout>
+    <Menu />
+
+    <article class="max-w-screen-lg mx-auto p-4">
+        <h1>{page.title.rendered}</h1>
+        <div set:html={page.content.rendered} />
+    </article>
+</Layout>

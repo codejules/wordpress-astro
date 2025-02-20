@@ -1,0 +1,20 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { getPostInfo, getAllPostSlugs } from "../../lib/wp.ts";
+
+const slug = (Astro.params as { slug: string }).slug ?? '';
+const { title, content, featuredImage } = await getPostInfo(slug);
+
+export async function getStaticPaths() {
+    const slugs = await getAllPostSlugs();
+    return slugs.map((slug: string) => ({ params: { slug } }));
+}
+---
+
+<Layout>
+    <article class="py-20">
+        <img class="w-full h-80 object-contain" src={featuredImage} alt={title}>
+        <h1>{title}</h1>
+        <div class="text-xl max-w-2xl mx-auto" set:html={content} />
+    </article>
+</Layout>
